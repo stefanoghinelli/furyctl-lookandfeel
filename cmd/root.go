@@ -257,6 +257,10 @@ furyctl is a command line interface tool to manage the full lifecycle of SIGHUP 
 	return rootCmd
 }
 
+func (r *RootCommand) SetVersion(version string) {
+	r.Command.Version = version
+}
+
 func initConfig() {
 	viper.SetEnvPrefix("FURYCTL")
 

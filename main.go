@@ -15,11 +15,13 @@
 package main
 
 import (
+	"context"
 	"os"
 	"runtime"
 	"strings"
 	"sync"
 
+	"github.com/charmbracelet/fang"
 	"github.com/sirupsen/logrus"
 
 	"github.com/sighupio/furyctl/cmd"
@@ -77,9 +79,12 @@ func exec() int {
 
 	defer wg.Wait()
 
-	if _, err := cmd.NewRootCmd().ExecuteC(); err != nil {
-		log.Error(err)
-
+	rootCmd := cmd.NewRootCmd()
+	
+	rootCmd.SetVersion(version)
+	
+	if err := fang.Execute(context.Background(), rootCmd.Command); err != nil {
+		// Fang already handles error, so we don't need to log again
 		return 1
 	}
 
